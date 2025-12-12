@@ -15,17 +15,15 @@
     <a-scene embedded arjs="patternRatio:0.90">
         <a-assets>
             <!-- 3Dモデルを読み込む -->
-            <a-asset-items id="monkey" src="/monkey.glb"></a-asset-items>
+            <a-asset-item id="monkey" src="monkey.glb"></a-asset-item>
         </a-assets>
         <!-- マーカー（今回はhiroマーカー）を検出して立方体を表示する -->
         <!-- emitevents=true でマーカーの検出イベントを有効にする -->
-        <a-marker type="pattern"
-            url="https://raw.githubusercontent.com/RamuneBIMI/AR_test.github.io/refs/heads/main/marker.patt"
-            emitevents="true">
+        <a-marker type="pattern" url="https://ramunebimi.github.io/AR_test.github.io/marker.patt" emitevents="true">
             <!-- 3Dモデルを呼び出す -->
             <!-- gltfファイル（a-gltf-modelタグ）-->
             <!-- <a-gltf-model scr="#monkey"></a-gltf-model> ←なぜか表示されない場合がある -->
-            <a-entity position="0 0 0" rotation="0 0 0" scale="0.7 0.7 0.7" gltf-model="#monkey">
+            <a-entity position="0 0 0" rotation="0 0 0" scale="0.7 0.7 0.7" gltf-model="#monkey"></a-entity>
         </a-marker>
         <a-entity camera></a-entity>
     </a-scene>

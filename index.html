@@ -12,14 +12,16 @@
 
 <body style="margin: 0; overflow: hidden">
     <!-- シーンを作成 -->
-    <a-scene embedded arjs="sourceType: webcam;">
+    <a-scene embedded arjs="patternRatio:0.90">
         <a-assets>
             <!-- 3Dモデルを読み込む -->
             <a-asset-items id="Strawberry" src="/Strawberry.gltf"></a-asset-items>
         </a-assets>
         <!-- マーカー（今回はhiroマーカー）を検出して立方体を表示する -->
         <!-- emitevents=true でマーカーの検出イベントを有効にする -->
-        <a-marker preset="hiro" emitevents="true">
+        <a-marker type="pattern"
+            url="https://raw.githubusercontent.com/RamuneBIMI/AR_test.github.io/refs/heads/main/marker.patt"
+            emitevents="true">
             <!-- 3Dモデルを呼び出す -->
             <!-- gltfファイル（a-gltf-modelタグ）-->
             <!-- <a-gltf-model scr="#Strawberry"></a-gltf-model> ←なぜか表示されない場合がある -->

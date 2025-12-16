@@ -1,40 +1,40 @@
 <script>
-const arModel = document.getElementById("arModel");
-const scaleSlider = document.getElementById("scaleSlider");
-const rotationSlider = document.getElementById("rotationSlider");
-const modelSelect = document.getElementById("modelSelect");
-const upload = document.getElementById("upload");
+  const select = document.getElementById("modelSelect");
+  const upload = document.getElementById("upload");
+  const arModel = document.getElementById("arModel");
+  const scaleSlider = document.getElementById("scaleSlider");
+  const rotationSlider = document.getElementById("rotationSlider");
 
-/* サイズ変更 */
-scaleSlider.addEventListener("input", () => {
-  const s = scaleSlider.value;
-  arModel.setAttribute("scale", `${s} ${s} ${s}`);
-});
+  /* モデル選択 */
+  select.addEventListener("change", () => {
+    arModel.setAttribute("gltf-model", select.value);
+  });
 
-/* 回転（Y軸） */
-rotationSlider.addEventListener("input", () => {
-  const r = rotationSlider.value;
-  arModel.setAttribute("rotation", `0 ${r} 0`);
-});
+  /* サイズ変更 */
+  scaleSlider.addEventListener("input", () => {
+    const s = scaleSlider.value;
+    arModel.setAttribute("scale", `${s} ${s} ${s}`);
+  });
 
-/* モデル選択 */
-modelSelect.addEventListener("change", () => {
-  arModel.setAttribute("gltf-model", modelSelect.value);
-});
+  /* 回転（Y軸） */
+  rotationSlider.addEventListener("input", () => {
+    const r = rotationSlider.value;
+    arModel.setAttribute("rotation", `0 ${r} 0`);
+  });
 
-/* アップロード */
-upload.addEventListener("change", (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
+  /* アップロード */
+  upload.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
 
-  const url = URL.createObjectURL(file);
+    const url = URL.createObjectURL(file);
 
-  const option = document.createElement("option");
-  option.value = url;
-  option.textContent = file.name;
-  modelSelect.appendChild(option);
+    const option = document.createElement("option");
+    option.value = url;
+    option.textContent = file.name;
+    select.appendChild(option);
 
-  modelSelect.value = url;
-  arModel.setAttribute("gltf-model", url);
-});
+    select.value = url;
+    arModel.setAttribute("gltf-model", url);
+  });
 </script>

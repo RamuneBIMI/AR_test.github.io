@@ -1,29 +1,32 @@
 #ui {
   position: fixed;
-  bottom: 12px;
+  bottom: 8px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 9999;
-  background: rgba(0,0,0,0.65);
+
+  background: rgba(0, 0, 0, 0.7);
   color: white;
   padding: 10px;
   border-radius: 12px;
+
   display: flex;
-  gap: 10px;
-  align-items: center;
-  font-size: 12px;
+  flex-wrap: wrap;          /* ←重要 */
+  gap: 8px;
+  justify-content: center;
+
+  max-width: 95vw;          /* ←画面幅に合わせる */
+  box-sizing: border-box;
 }
 
+/* スライダー系を横幅いっぱいに */
 #ui label {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  font-size: 12px;
+  width: 120px;
 }
 
-#ui {
-  pointer-events: auto;
-}
-
-a-scene {
-  pointer-events: none;
+#ui input[type="range"] {
+  width: 100%;
 }

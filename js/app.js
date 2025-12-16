@@ -10,24 +10,29 @@ window.addEventListener("load", () => {
 
   console.log("app.js loaded");
 
-  /* ===== 状態保持 ===== */
+  // nullチェック（超重要）
+  if (!arModel || !scaleSlider || !rotXSlider || !rotZSlider) {
+    console.error("UI element missing", {
+      arModel, scaleSlider, rotXSlider, rotZSlider
+    });
+    return;
+  }
+
   let scale = 0.7;
   let rotX = 0;
   let rotZ = 0;
 
-  /* ===== 共通更新 ===== */
   function updateTransform() {
+    console.log("update", scale, rotX, rotZ);
     arModel.setAttribute("scale", `${scale} ${scale} ${scale}`);
     arModel.setAttribute("rotation", `${rotX} 0 ${rotZ}`);
   }
 
-  /* ===== サイズ ===== */
   scaleSlider.addEventListener("input", () => {
     scale = scaleSlider.value;
     updateTransform();
   });
 
-  /* ===== 回転 ===== */
   rotXSlider.addEventListener("input", () => {
     rotX = rotXSlider.value;
     updateTransform();
@@ -38,18 +43,15 @@ window.addEventListener("load", () => {
     updateTransform();
   });
 
-  /* ===== モデル選択 ===== */
   modelSelect.addEventListener("change", () => {
     arModel.setAttribute("gltf-model", modelSelect.value);
   });
 
-  /* ===== アップロード ===== */
   upload.addEventListener("change", (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
     const url = URL.createObjectURL(file);
-
     const option = document.createElement("option");
     option.value = url;
     option.textContent = file.name;
@@ -59,6 +61,6 @@ window.addEventListener("load", () => {
     arModel.setAttribute("gltf-model", url);
   });
 
-  /* 初期反映 */
   updateTransform();
 });
+

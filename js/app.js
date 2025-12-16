@@ -12,6 +12,7 @@
 
   /* サイズ変更 */
   scaleSlider.addEventListener("input", () => {
+　　console.log("scale slider moved", scaleSlider.value);
     const s = scaleSlider.value;
     arModel.setAttribute("scale", `${s} ${s} ${s}`);
   });
@@ -37,4 +38,6 @@
     select.value = url;
     arModel.setAttribute("gltf-model", url);
   });
+
+　　
 </script>

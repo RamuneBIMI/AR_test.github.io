@@ -1,49 +1,114 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="ja">
 <head>
-    <title>AR Example2</title>
-    <!-- A-Frameを読み込む -->
-    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
-    <!-- AR.js(A-Frame用)を読み込む -->
-    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
-    <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta charset="utf-8" />
+  <title>WebAR Model Selector</title>
+
+  <!-- A-Frame -->
+  <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+
+  <!-- AR.js -->
+  <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+
+  <!-- animation-mixer -->
+  <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+
+    /* UIエリア */
+    #ui {
+      position: fixed;
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 9999;
+      background: rgba(0,0,0,0.6);
+      padding: 10px;
+      border-radius: 10px;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    #ui select,
+    #ui input {
+      font-size: 14px;
+    }
+  </style>
 </head>
 
-<body style="margin: 0; overflow: hidden">
-    <!-- シーンを作成 -->
-    <a-scene embedded arjs="patternRatio:0.90">
-        <a-assets>
-            <!-- 3Dモデルを読み込む -->
-            <a-asset-item id="monkey" src="monkey.glb"></a-asset-item>
-        </a-assets>
-        <!-- マーカー（今回はhiroマーカー）を検出して立方体を表示する -->
-        <!-- emitevents=true でマーカーの検出イベントを有効にする -->
-        <a-marker type="pattern" url="https://ramunebimi.github.io/AR_test.github.io/marker.patt">
-            <!-- 3Dモデルを呼び出す -->
-            <!-- gltfファイル（a-gltf-modelタグ）-->
-            <!-- <a-gltf-model scr="#monkey"></a-gltf-model> ←なぜか表示されない場合がある -->
-            <a-entity gltf-model="#monkey" 
-                      animation-mixer="clip:Action"
-                      position="0 0 0" rotation="0 0 0" scale="0.7 0.7 0.7">
-                      </a-entity>
-        </a-marker>
-        <a-entity camera></a-entity>
-    </a-scene>
-    <script>
-        document
-            .querySelector("a-marker")
-            .addEventListener("markerFound", (event) => {
-                console.log("Marker Found", event);
-            });
+<body>
 
-        document
-            .querySelector("a-marker")
-            .addEventListener("markerLost", (event) => {
-                console.log("Marker Lost", event);
-            });
-    </script>
+<!-- ===== UI ===== -->
+<div id="ui">
+  <select id="modelSelect">
+    <option value="models/monkey.glb">モンキー</option>
+    <option value="models/robot.glb">ロボット</option>
+    <option value="models/cat.glb">ねこ</option>
+  </select>
+
+  <input type="file" id="upload" accept=".glb">
+</div>
+
+<!-- ===== AR Scene ===== -->
+<a-scene embedded arjs="patternRatio:0.90">
+  <a-assets>
+    <!-- 初期モデル -->
+    <a-asset-item id="modelAsset" src="models/monkey.glb"></a-asset-item>
+  </a-assets>
+
+  <!-- マーカー -->
+  <a-marker type="pattern" url="marker.patt">
+    <a-entity
+      id="arModel"
+      gltf-model="#modelAsset"
+      animation-mixer
+      position="0 0 0"
+      rotation="0 0 0"
+      scale="0.7 0.7 0.7">
+    </a-entity>
+  </a-marker>
+
+  <a-entity camera></a-entity>
+</a-scene>
+
+<script>
+  const select = document.getElementById("modelSelect");
+  const upload = document.getElementById("upload");
+  const arModel = document.getElementById("arModel");
+
+  /* ===== 既存モデル選択 ===== */
+  select.addEventListener("change", () => {
+    const src = select.value;
+    arModel.setAttribute("gltf-model", src);
+  });
+
+  /* ===== アップロード処理 ===== */
+  upload.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const url = URL.createObjectURL(file);
+
+    // セレクトに追加
+    const option = document.createElement("option");
+    option.value = url;
+    option.textContent = file.name;
+    select.appendChild(option);
+
+    // そのまま表示
+    select.value = url;
+    arModel.setAttribute("gltf-model", url);
+  });
+</script>
+
 </body>
-
 </html>
+
